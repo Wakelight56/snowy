@@ -124,7 +124,7 @@ def remove_player_bind_id(region:str, qid: str, index: int | None) -> str:
     _profile_db.set("bind_list", all_bind_list)
     logger.info(f"为 {qid} 解除绑定 {region}账号: {removed_uid}")
 
-    ret_info += f"已解除绑定你的{region}账号{process_hide_uid(region, removed_uid, keep=6)}\n"
+    ret_info += f"已解除绑定你的{region}账号{process_hide_uid(region, qid, removed_uid, keep=6)}\n"
 
     if all_main_bind_list[region].get(qid, None) == removed_uid:
         if uids:
@@ -159,7 +159,7 @@ def set_player_main_bind_id(region: str, qid: str, index: int) -> str:
     all_main_bind_list[region][qid] = new_main_uid
     _profile_db.set("main_bind_list", all_main_bind_list)
 
-    return f"已将你的{region}主账号修改为{process_hide_uid(region, new_main_uid, keep=6)}"
+    return f"已将你的{region}主账号修改为{process_hide_uid(region, qid, new_main_uid, keep=6)}"
 
 # 使用索引交换账号顺序
 def swap_player_bind_id(region, qid: str, index1: int, index2: int) -> str:

@@ -166,9 +166,62 @@ async def _(ctx):
   cn skp refresh
   cnskprefresh
 
+账号绑定:
+  cn 绑定 游戏ID
+  jp 绑定 游戏ID
+  cnbind 游戏ID
+  jpbind 游戏ID
+
+解除绑定:
+  cn 解绑
+  jp 解绑
+  cnunbind
+  jpunbind
+
 查看帮助:
   dhelp
   帮助"""
     
     # 返回纯文本结果
     yield ctx.event.plain_result(help_text)
+
+# 注册绑定指令
+print("注册绑定指令")
+pjsk_bind = SekaiCmdHandler(
+    [
+        "绑定",
+        "bind",
+    ],
+    prefix_args=[""],
+)
+
+@pjsk_bind.handle()
+async def _(ctx):
+    from ..utils.bind import add_player_bind_id
+    
+    args = ctx.get_args().strip()
+    if not args:
+        yield ctx.event.plain_result(f"请使用 '{ctx.region} 绑定 游戏ID' 来绑定账号")
+        return
+    
+    qid = ctx.event.get_sender_id()
+    additional_info = add_player_bind_id(ctx.region, qid, args, True)
+    yield ctx.event.plain_result(f"已绑定 {ctx.region} 账号: {args}\n{additional_info}")
+
+# 注册解绑指令
+print("注册解绑指令")
+pjsk_unbind = SekaiCmdHandler(
+    [
+        "解绑",
+        "unbind",
+    ],
+    prefix_args=[""],
+)
+
+@pjsk_unbind.handle()
+async def _(ctx):
+    from ..utils.bind import remove_player_bind_id
+    
+    qid = ctx.event.get_sender_id()
+    info = remove_player_bind_id(ctx.region, qid, None)
+    yield ctx.event.plain_result(info)
