@@ -42,7 +42,7 @@ async def get_sekairanking_img(ctx: HandlerContext, refresh: bool = False):
             yield ctx.event.image_result(os.path.abspath(screenshot_path))
             return
         try:
-            yield ctx.event.plain_result(f"正在打开下载 {ctx.region}的预测数据")
+            yield ctx.event.plain_result(f"正在下载 {ctx.region} 的榜线预测截图")
             await screenshot_sekairanking_page(ctx, screenshot_path)
             logger.info(f"下载 {ctx.region} 的榜线预测截图成功")
         except Exception as e:
