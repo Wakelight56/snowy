@@ -1,0 +1,4 @@
+astrbot
+asyncio
+playwright
+orjson
