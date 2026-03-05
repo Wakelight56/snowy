@@ -111,67 +111,66 @@ async def _(ctx):
 
 # 注册dhelp指令
 print("注册dhelp指令")
-pjsk_dhelp = SekaiCmdHandler(
+
+# 为dhelp创建一个单独的处理器，不需要区服前缀
+class HelpCmdHandler(CmdHandler):
+    """帮助命令处理器，不需要区服前缀"""
+    
+    def __init__(self, commands: list[str]):
+        super().__init__(commands)
+        print(f"注册帮助指令 {commands[0]}")
+    
+    def parse_context(self, event: AstrMessageEvent) -> HandlerContext | None:
+        message = self._normalize_spaces(event.get_message_str())
+        body = message.strip()
+        if not body:
+            return None
+        
+        # 直接匹配命令，不需要区服前缀
+        for command in self.commands:
+            if body.casefold() == command.casefold():
+                ctx = HandlerContext(event)
+                ctx.region = "cn"  # 设置默认区服
+                ctx.trigger_cmd = command
+                ctx.original_trigger_cmd = command
+                return ctx
+        return None
+
+pjsk_dhelp = HelpCmdHandler(
     [
         "dhelp",
         "帮助",
-    ],
-    prefix_args=[""],
+    ]
 )
+
 @pjsk_dhelp.handle()
 async def _(ctx):
-    from PIL import Image, ImageDraw, ImageFont
     import os
     import tempfile
+    from astrbot.api.message_components import Comp
     
-    # 创建帮助图片
-    width, height = 800, 600
-    image = Image.new('RGB', (width, height), color=(240, 240, 240))
-    draw = ImageDraw.Draw(image)
+    # 使用纯文本方式返回帮助信息，避免图片乱码问题
+    help_text = """Moesekai 插件帮助
+
+个人信息查询:
+  cn 个人信息
+  jp grxx
+  cn个人信息
+  jpgrxx
+
+榜线预测:
+  cn skp
+  jp 预测
+  cnskp
+  jp预测
+
+强制刷新:
+  cn skp refresh
+  cnskprefresh
+
+查看帮助:
+  dhelp
+  帮助"""
     
-    # 尝试加载字体
-    try:
-        font = ImageFont.truetype("arial.ttf", 20)
-    except:
-        font = ImageFont.load_default()
-    
-    # 绘制标题
-    draw.text((400, 30), "Moesekai 插件帮助", fill=(0, 0, 0), font=font, anchor="mm")
-    
-    # 绘制指令示例
-    commands = [
-        "个人信息查询:",
-        "  cn 个人信息",
-        "  jp grxx",
-        "  cn个人信息",
-        "  jpgrxx",
-        "",
-        "榜线预测:",
-        "  cn skp",
-        "  jp 预测",
-        "  cnskp",
-        "  jp预测",
-        "",
-        "强制刷新:",
-        "  cn skp refresh",
-        "  cnskprefresh",
-    ]
-    
-    y = 100
-    for command in commands:
-        draw.text((50, y), command, fill=(0, 0, 0), font=font)
-        y += 30
-    
-    # 保存图片到临时文件
-    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp:
-        temp_path = temp.name
-    image.save(temp_path)
-    
-    # 返回图片结果
-    yield ctx.event.image_result(os.path.abspath(temp_path))
-    
-    # 清理临时文件
-    try:
-        os.unlink(temp_path)
-    except:
-        pass
+    # 返回纯文本结果
+    yield ctx.event.plain_result(help_text)

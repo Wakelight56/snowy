@@ -2,4 +2,3 @@ astrbot
 asyncio
 playwright
 orjson
-Pillow
