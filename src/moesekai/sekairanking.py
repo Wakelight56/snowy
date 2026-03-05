@@ -8,7 +8,8 @@ from astrbot.api import logger
 from ..utils.webdriver import PlaywrightPage
 from ..config import get_global_config, Config
 from ..utils.lifecycle import on_initialize
-from ..handlers import HandlerContext, SekaiCmdHandler
+from ..handlers import HandlerContext, SekaiCmdHandler, CmdHandler
+from astrbot.api.event import AstrMessageEvent
 
 sekairanking_lock: asyncio.Lock = asyncio.Lock()
 config: Config | None = None
