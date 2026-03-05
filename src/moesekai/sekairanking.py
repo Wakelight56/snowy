@@ -108,3 +108,70 @@ async def _(ctx):
 
     async for result in get_sekairanking_img(ctx=ctx, refresh=refresh):
         yield result
+
+# 注册dhelp指令
+print("注册dhelp指令")
+pjsk_dhelp = SekaiCmdHandler(
+    [
+        "dhelp",
+        "帮助",
+    ],
+    prefix_args=[""],
+)
+@pjsk_dhelp.handle()
+async def _(ctx):
+    from PIL import Image, ImageDraw, ImageFont
+    import os
+    import tempfile
+    
+    # 创建帮助图片
+    width, height = 800, 600
+    image = Image.new('RGB', (width, height), color=(240, 240, 240))
+    draw = ImageDraw.Draw(image)
+    
+    # 尝试加载字体
+    try:
+        font = ImageFont.truetype("arial.ttf", 20)
+    except:
+        font = ImageFont.load_default()
+    
+    # 绘制标题
+    draw.text((400, 30), "Moesekai 插件帮助", fill=(0, 0, 0), font=font, anchor="mm")
+    
+    # 绘制指令示例
+    commands = [
+        "个人信息查询:",
+        "  cn 个人信息",
+        "  jp grxx",
+        "  cn个人信息",
+        "  jpgrxx",
+        "",
+        "榜线预测:",
+        "  cn skp",
+        "  jp 预测",
+        "  cnskp",
+        "  jp预测",
+        "",
+        "强制刷新:",
+        "  cn skp refresh",
+        "  cnskprefresh",
+    ]
+    
+    y = 100
+    for command in commands:
+        draw.text((50, y), command, fill=(0, 0, 0), font=font)
+        y += 30
+    
+    # 保存图片到临时文件
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as temp:
+        temp_path = temp.name
+    image.save(temp_path)
+    
+    # 返回图片结果
+    yield ctx.event.image_result(os.path.abspath(temp_path))
+    
+    # 清理临时文件
+    try:
+        os.unlink(temp_path)
+    except:
+        pass
