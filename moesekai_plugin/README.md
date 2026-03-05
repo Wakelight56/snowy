@@ -42,28 +42,54 @@ python -m playwright install
 
 ### 个人信息查询
 
+**带空格格式：**
 ```
-/区服 个人信息
-/区服 grxx
-/区服 profile
+区服 个人信息
+区服 grxx
+区服 profile
+```
+
+**无空格格式：**
+```
+区服个人信息
+区服grxx
+区服profile
 ```
 
 ### 榜线预测
 
+**带空格格式：**
 ```
-/区服 /sk预测
-/区服 /榜线预测
-/区服 /skp
-/区服 /prediction
-/区服 /预测
-/区服 /pjsk sk predict
-/区服 /pjsk board predict
+区服 sk预测
+区服 榜线预测
+区服 skp
+区服 prediction
+区服 预测
+区服 pjsk sk predict
+区服 pjsk board predict
+```
+
+**无空格格式：**
+```
+区服sk预测
+区服榜线预测
+区服skp
+区服prediction
+区服预测
+区服pjskskpredict
+区服pjskboardpredict
 ```
 
 ### 强制刷新榜线预测
 
+**带空格格式：**
 ```
-/区服 /skp refresh
+区服 skp refresh
+```
+
+**无空格格式：**
+```
+区服skprefresh
 ```
 
 ## 支持的区服
