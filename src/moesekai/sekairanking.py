@@ -8,7 +8,8 @@ from astrbot.api import logger
 from ..utils.webdriver import PlaywrightPage
 from ..config import get_global_config, Config
 from ..utils.lifecycle import on_initialize
-from ..handlers import HandlerContext, SekaiCmdHandler, CmdHandler
+from ..handlers.base import CmdHandler, HandlerContext
+from ..handlers.sekai import SekaiCmdHandler
 from astrbot.api.event import AstrMessageEvent
 
 sekairanking_lock: asyncio.Lock = asyncio.Lock()
@@ -146,10 +147,6 @@ pjsk_dhelp = HelpCmdHandler(
 
 @pjsk_dhelp.handle()
 async def _(ctx):
-    import os
-    import tempfile
-    from astrbot.api.message_components import Comp
-    
     # 使用纯文本方式返回帮助信息，避免图片乱码问题
     help_text = """Moesekai 插件帮助
 
