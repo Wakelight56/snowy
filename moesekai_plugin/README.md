@@ -120,6 +120,16 @@ python -m playwright install
 
 ## 版本信息
 
-- 版本：0.0.1
-- 作者：xmlq
+- 版本：0.0.2
+- 作者：xmlq (修改)
 - 描述：访问 moesekai 并截图
+
+## 插件声明
+
+- 该插件修改自 [astrbot_plugin_moesekai](https://github.com/xuanmingLQ/astrbot_plugin_moesekai.git)
+- 原作者：xuanmingLQ
+- 此插件根据AI制作
+
+## 版本更新
+
+详细的版本更新历史请查看 [CHANGELOG.md](CHANGELOG.md) 文件。
