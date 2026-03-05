@@ -7,7 +7,7 @@ from .src.handlers import dispatch_event
 from .src.utils.lifecycle import run_initialize_hooks, run_terminate_hooks
 from .src.moesekai import *
 
-@register("moesekai", "xmlq", "访问moesekai并截图", "0.0.1")
+@register("astrbot_plugin_moesekai", "xmlq", "访问moesekai并截图", "v0.0.1")
 class MoesekaiPlugin(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
